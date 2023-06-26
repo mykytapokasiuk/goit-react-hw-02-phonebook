@@ -6,7 +6,7 @@ import ContactList from './ContactList/ContactList.js';
 export default class App extends Component {
   state = {
     contacts: [],
-    filter: [],
+    filter: '',
   };
 
   onAddContact = (data, name) => {
@@ -20,22 +20,33 @@ export default class App extends Component {
     });
   };
 
-  onFilterContacts = name => {
+  onChangeFilter = event => {
     this.setState({
-      filter: this.state.contacts.filter(item =>
-        item.name.toLowerCase().includes(name)
-      ),
+      filter: event.target.value,
+    });
+  };
+
+  onRemoveContact = contactId => {
+    this.setState({
+      contacts: this.state.contacts.filter(contact => contact.id !== contactId),
     });
   };
   render() {
+    const { contacts, filter } = this.state,
+      filteredContacts = contacts.filter(contact =>
+        contact.name.toLowerCase().includes(filter)
+      );
     return (
       <div>
         <h1>Phonebook</h1>
         <ContactForm onAddContact={this.onAddContact} />
 
         <h2>Contacts</h2>
-        <Filter onFilterContacts={this.onFilterContacts} />
-        <ContactList contacts={this.state.filter} />
+        <Filter value={filter} onChangeFilter={this.onChangeFilter} />
+        <ContactList
+          filteredContacts={filteredContacts}
+          onRemoveContact={this.onRemoveContact}
+        />
       </div>
     );
   }

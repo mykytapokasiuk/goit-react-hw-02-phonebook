@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ContactForm from './ContactForm/ContactForm.js';
 import Filter from './Filter/Filter.js';
 import ContactList from './ContactList/ContactList.js';
+import css from './App.module.css';
 
 export default class App extends Component {
   state = {
@@ -37,16 +38,22 @@ export default class App extends Component {
         contact.name.toLowerCase().includes(filter)
       );
     return (
-      <div>
-        <h1>Phonebook</h1>
-        <ContactForm onAddContact={this.onAddContact} />
+      <div className={css.app}>
+        <div className={css.container}>
+          <h1>Phonebook</h1>
+          <ContactForm onAddContact={this.onAddContact} />
 
-        <h2>Contacts</h2>
-        <Filter value={filter} onChangeFilter={this.onChangeFilter} />
-        <ContactList
-          filteredContacts={filteredContacts}
-          onRemoveContact={this.onRemoveContact}
-        />
+          <h2>Contacts</h2>
+          <Filter value={filter} onChangeFilter={this.onChangeFilter} />
+          {contacts.length === 0 ? (
+            <p className={css.contactsEmptyText}>The contact list is empty</p>
+          ) : (
+            <ContactList
+              filteredContacts={filteredContacts}
+              onRemoveContact={this.onRemoveContact}
+            />
+          )}
+        </div>
       </div>
     );
   }

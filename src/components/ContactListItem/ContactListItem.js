@@ -7,6 +7,7 @@ const ContactListItem = ({ name, number, contactId, onRemoveContact }) => {
     <li className={css.listItem}>
       {name}: {number}
       <button
+        className={css.listItemBtn}
         type="button"
         onClick={() => {
           onRemoveContact(contactId);

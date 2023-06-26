@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ContactListItem from '../ContactListItem/ContactListItem.js';
+import css from './ContactList.module.css';
 
 const ContactList = ({ filteredContacts, onRemoveContact }) => {
   return (
-    <ul>
-      {filteredContacts.map(contact => (
-        <ContactListItem
-          key={contact.id}
-          name={contact.name}
-          number={contact.number}
-          contactId={contact.id}
-          onRemoveContact={onRemoveContact}
-        />
-      ))}
-    </ul>
+    <div className={css.container}>
+      <ul className={css.contactList}>
+        {filteredContacts.map(contact => (
+          <ContactListItem
+            key={contact.id}
+            name={contact.name}
+            number={contact.number}
+            contactId={contact.id}
+            onRemoveContact={onRemoveContact}
+          />
+        ))}
+      </ul>
+    </div>
   );
 };
 

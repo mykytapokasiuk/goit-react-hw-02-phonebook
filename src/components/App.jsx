@@ -3,6 +3,7 @@ import ContactForm from './ContactForm/ContactForm.js';
 import Filter from './Filter/Filter.js';
 import ContactList from './ContactList/ContactList.js';
 import css from './App.module.css';
+import { nanoid } from 'nanoid';
 
 export default class App extends Component {
   state = {
@@ -10,15 +11,23 @@ export default class App extends Component {
     filter: '',
   };
 
-  onAddContact = (data, name) => {
-    const isExist = this.state.contacts.some(item => item.name === name);
+  onAddContact = ({ name, number }) => {
+    const isExist = this.state.contacts.some(
+      item => item.name.toLowerCase() === name.toLowerCase()
+    );
     if (isExist) {
       alert(`${name} is already in contacts.`);
       return;
     }
-    this.setState({
-      contacts: [...this.state.contacts, data],
-    });
+    const newContact = {
+      name,
+      number,
+      id: nanoid(),
+    };
+
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, newContact],
+    }));
   };
 
   onChangeFilter = event => {
@@ -32,11 +41,17 @@ export default class App extends Component {
       contacts: this.state.contacts.filter(contact => contact.id !== contactId),
     });
   };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter)
+    );
+  };
+
   render() {
     const { contacts, filter } = this.state,
-      filteredContacts = contacts.filter(contact =>
-        contact.name.toLowerCase().includes(filter)
-      );
+      filteredContacts = this.getFilteredContacts();
     return (
       <div className={css.app}>
         <div className={css.container}>
